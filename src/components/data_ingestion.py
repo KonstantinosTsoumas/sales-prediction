@@ -2,7 +2,6 @@ import os
 import sys
 from dataclasses import dataclass
 
-
 import pandas as pd
 from sklearn.model_selection import train_test_split
 
@@ -18,24 +17,28 @@ class DataIngestionConfig:
     raw_data_path: str=os.path.join('artifacts', 'DataCoSupplyChainDataset.csv')
 
 class DataIngestion:
-    try:
-        df = pd.read_csv('input/DataCoSupplyChainDataset.csv')
-        logging.info('The dataset is read as a dataframe')
+    def __init__(self, config: DataIngestionConfig):
+        self.ingestion_config = config
 
-        # Create directory if it doesn't exist
-        os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
-        df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
+    def initiate_data_ingestion(self):
+        logging.info("The data ingestion phase has started")
+        try:
+            df = pd.read_csv('input/DataCoSupplyChainDataset.csv')
+            logging.info('The dataset is read as a dataframe')
 
-        logging.info('Both the train and the test dataset have been initiated')
-        train_set, test_set = train_test_split(df, test_size=0.3, random_state=42)
-        train_set.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
-        test_set.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
+            # Create directory if it doesn't exist
+            os.makedirs(os.path.dirname(self.ingestion_config.train_data_path), exist_ok=True)
+            df.to_csv(self.ingestion_config.raw_data_path, index=False, header=True)
 
-        logging.info('The data ingestion phase is complete')
-        return self.ingestion_config.train_data_path, self.ingestion_config.test_data_path
+            logging.info('Both the train and the test dataset have been initiated')
+            train_set, test_set = train_test_split(df, test_size=0.3, random_state=42)
+            train_set.to_csv(self.ingestion_config.train_data_path, index=False, header=True)
+            test_set.to_csv(self.ingestion_config.test_data_path, index=False, header=True)
 
-    except Exception as e:
-        raise CustomException(e, sys)
+            logging.info('The data ingestion phase is complete')
+            return self.ingestion_config.train_data_path, self.ingestion_config.test_data_path
+        except Exception as e:
+            raise CustomException(e, sys)
 
 if __name__=="__main__":
     # Initialize data ingestion

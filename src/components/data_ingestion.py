@@ -17,8 +17,8 @@ class DataIngestionConfig:
     raw_data_path: str=os.path.join('artifacts', 'DataCoSupplyChainDataset.csv')
 
 class DataIngestion:
-    def __init__(self, config: DataIngestionConfig):
-        self.ingestion_config = config
+    def __init__(self):
+        self.ingestion_config = DataIngestionConfig()
 
     def initiate_data_ingestion(self):
         logging.info("The data ingestion phase has started")

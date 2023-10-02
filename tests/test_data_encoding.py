@@ -25,9 +25,13 @@ class TestDataEncoding(unittest.TestCase):
         self.assertTrue('B_dog' in encoded_df.columns)
         self.assertTrue('B_cat' in encoded_df.columns)
 
+        self.assertFalse('3' in encoded_df.columns)
+        self.assertFalse('10' in encoded_df.columns)
+        self.assertFalse('1' in encoded_df.columns)
+
         # Clean up the generated CSV file§
-        if os.path.exists(DataEncodingConfig.encoded_data_csv_path):
-            os.remove(DataEncodingConfig.encoded_data_csv_path)
+        if os.path.exists(DataEncodingConfig.artifacts_dir):
+            os.remove(DataEncodingConfig.artifacts_dir)
 
 
 if __name__ == '__main__':

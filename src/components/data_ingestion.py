@@ -7,14 +7,15 @@ from sklearn.model_selection import train_test_split
 
 from src.exception import CustomException
 from src.logger import logging
+from config import TRAIN_DATA_PATH, TEST_DATA_PATH, RAW_DATA_PATH, INPUT_DATA_CSV
 from src.components.data_transformation import DataTransformation, DataTransformationConfig
 from src.components.model_trainer import ModelTrainerConfig, ModelTrainer
 
 @dataclass
 class DataIngestionConfig:
-    train_data_path: str=os.path.join('artifacts', 'train.csv')
-    test_data_path: str=os.path.join('artifacts', 'test.csv')
-    raw_data_path: str=os.path.join('artifacts', 'DataCoSupplyChainDataset.csv')
+    train_data_path: str = TRAIN_DATA_PATH
+    test_data_path: str = TEST_DATA_PATH
+    raw_data_path: str = RAW_DATA_PATH
 
 class DataIngestion:
     def __init__(self):
@@ -23,7 +24,7 @@ class DataIngestion:
     def initiate_data_ingestion(self):
         logging.info("The data ingestion phase has started")
         try:
-            df = pd.read_csv('input/DataCoSupplyChainDataset.csv')
+            df = pd.read_csv(INPUT_DATA_CSV)
             logging.info('The dataset is read as a dataframe')
 
             # Create directory if it doesn't exist

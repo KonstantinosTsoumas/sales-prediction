@@ -18,3 +18,31 @@ class FeatureSelectionConfig:
     selected_features_path = os.path.join(ARTIFACTS_DIR, "selected_features.pkl")
     correlated_features_path = os.path.join(ARTIFACTS_DIR, "correlated_features.pkl")
 
+class FeatureSelection:
+    def __init__(self):
+        self.data_analysis_config = FeatureSelectionConfig()
+
+    def calculate_correlation(self, numerical_features):
+        correlation_matrix = numerical_features.corr()
+        return correlation_matrix
+
+    def plot_correlation_with_target(self, correlation_matrix, target_column, save_path):
+        """
+        This function plots and saves the correlation of all numerical features with the specified target column.
+
+        Args:
+        correlation_matrix: df, the correlation matrix of the dataset.
+        target_column: str, the name of the target column.
+        save_path: str, the path where the plot will be saved.
+
+        Returns: -
+        """
+        target_corr = correlation_matrix[target_column].sort_values(ascending=False)
+        plt.figure(figsize=(10, 6))
+        sns.barplot(x=target_corr.values, y=target_corr.index)
+        plt.title(f'Correlation of Numerical Features with {target_column}')
+        plt.xlabel('Correlation Coefficient')
+        plt.ylabel('Features')
+        plt.savefig(save_path)
+        plt.show()
+

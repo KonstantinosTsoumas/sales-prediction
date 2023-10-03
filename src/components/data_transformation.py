@@ -7,33 +7,18 @@ from typing import List, Dict
 from src.exception import CustomException
 from sklearn.impute import SimpleImputer
 from src.logger import logging
+from config import ARTIFACTS_DIR, TRANSFORMED_DATA_PATH
 import os
 
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path=os.path.join('artifacts', 'preprocessor.pkl')
+    preprocessor_obj_file_path=os.path.join(ARTIFACTS_DIR, 'preprocessor.pkl')
+    transformed_data_csv_path = os.path.join(ARTIFACTS_DIR, "transformed_data.csv")
 
 class DataTransformation:
     def __init__(self):
         self.data_transformation_config=DataTransformationConfig()
         logging.info("The data transformation phase has started.")
-
-    def validate_dataframe(self, df: pd.DataFrame, date_cols: List[str]):
-        """
-        This function validates the df to ensure that columns intended to be of type datetime.
-
-        Args:
-            df: df, the df to validate.
-            date_cols: List[str], a list of column names that should be of datetime type.
-
-        Raises:
-            CustomException: If a column that's supposed to be datetime is not.
-        """
-
-        for date_col in date_cols:
-            if df[date_col].dtype != 'datetime64[ns]':
-                error_message = f"Expected datetime64[ns] dtype for column {date_col}, found {df[date_col].dtype}"
-                raise CustomException(error_message, sys.exc_info())
 
     def split_date_feature(self, df: pd.DataFrame, date_cols: List[str], date_features: Dict[str, List[str]]) -> pd.DataFrame:
         """
@@ -48,9 +33,11 @@ class DataTransformation:
         df: a df with date columns as replaced by the extracted features.
         """
         logging.info(f" Starting to split date features. Initial DataFrame shape: {df.shape}")
-        self.validate_dataframe(df, date_cols)
-        logging.info(" The dataframe contains columns of type datetime, validated.")
         for date_col in date_cols:
+            # Check if any element in the date column is of integer type
+            if df[date_col].apply(type).eq(int).any():
+                raise CustomException(f"Invalid data type for date column {date_col}", sys)
+
             df[date_col] = pd.to_datetime(df[date_col])
             for feature in date_features.get(date_col, []):
                 df[f"{date_col}_{feature}"] = getattr(df[date_col].dt, feature)
@@ -93,3 +80,28 @@ class DataTransformation:
         logging.info(f" Feature imputation done. New DataFrame shape: {df.shape}")
         return df
 
+    def initiate_data_transformation(self, df: pd.DataFrame) -> pd.DataFrame:
+        try:
+            logging.info("Initiating the process of reading train and test data files.")
+            df = pd.read_csv(df)
+            logging.info(f"Successfully read train data from {df}.")
+            logging.info("Starting missing value curation.")
+
+            # Split date features
+            date_cols = ['order date (DateOrders)']
+            # Define the features we want to extract from the date column
+            date_features = {"order date (DateOrders)": ["year", "month", 'day']}
+            df = self.split_date_feature(df, date_cols, date_features)
+
+            logging.info("Successfully split date columns into their respective features in both train and test datasets.")
+
+            logging.info("Initiating dynamic imputation on train and test datasets.")
+            df = self.dynamic_imputer(df)
+            logging.info("Successfully applied dynamic imputation on missing values in both train and test datasets.")
+            logging.info('Starting saving the dataset as a csv file in the "artifacts" directory.')
+
+            # Save transformed file to directory
+            df.to_csv(self.data_transformation_config.transformed_data_csv_path, index=False)
+            logging.info('Saving the dataset has been successfully completed.')
+        except Exception as e:
+            raise CustomException(e, sys)

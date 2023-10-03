@@ -81,3 +81,37 @@ class FeatureSelection:
          """
         target_corr = correlation_matrix[target_column].sort_values(ascending=False)
         return target_corr[target_corr.abs() > threshold].index.tolist()
+
+    def train_rf_for_feature_importance(self, X, y):
+        """
+        This function trains a Random Forest Regressor model to identify feature importance.
+
+        Args:
+        X: df, the features df.
+        y: Series, the target variable Series.
+
+        Returns:
+        array: an array of feature importances.
+        """
+        rf_model = RandomForestRegressor(n_estimators=100, random_state=42)
+        rf_model.fit(X, y)
+        return rf_model.feature_importances_
+
+    def get_important_features_from_rf(self, feature_importances, X_columns, threshold=0.03):
+        """
+        This function filters out features based on their importance as determined by Random Forest Regressor.
+
+        Args:
+        feature_importances: array, the feature importances obtained from a trained Random Forest model.
+        X_columns: List, the column names of the features.
+        threshold: float, the importance under which features are ignored (default is 0.03).
+
+        Returns:
+        List, the column names that are deemed important by Random Forest.
+        """
+        features_df = pd.DataFrame({
+            'Feature': X_columns,
+            'Importance': feature_importances
+        })
+        return features_df[features_df['Importance'] > threshold]['Feature'].tolist()
+

@@ -104,7 +104,7 @@ class DataTransformation:
             df.to_csv(self.data_transformation_config.transformed_data_csv_path, index=False)
             logging.info('Saving the dataset has been successfully completed.')
 
-            # Save transformed DataFrame to directory using pickle
+            # Save transformed df to directory
             save_object(self.data_transformation_config.preprocessor_obj_file_path, df)
             return df
 

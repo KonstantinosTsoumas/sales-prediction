@@ -46,3 +46,38 @@ class FeatureSelection:
         plt.savefig(save_path)
         plt.show()
 
+    def identify_correlated_features(self, corr_matrix, threshold=0.8):
+        """
+        This function identifies features that are highly correlated based on the provided threshold.
+
+        Args:
+        corr_matrix: df, the correlation matrix of the dataset.
+        threshold: float, the correlation coefficient threshold for identifying features (mind: the default is 0.8).
+
+        Returns:
+        set, a set of column names that are correlated beyond the specified threshold.
+        """
+        # Store the correlated features in a set
+        correlated_features = set()
+        # Loop over the columns in the corr matrix and select only the highly correlated
+        for i in range(len(corr_matrix.columns)):
+            for j in range(i):
+                if abs(corr_matrix.iloc[i, j]) > threshold:
+                    colname = corr_matrix.columns[i]
+                    correlated_features.add(colname)
+        return correlated_features
+
+    def get_correlated_features(self, correlation_matrix, target_column, threshold=0.3):
+        """
+         This function filters out features based on their correlation with the target column.
+
+         Args:
+         correlation_matrix: df, the correlation matrix of the numerical features.
+         target_column: str, the column we're looking to predict.
+         threshold: float, the absolute value under which correlations are ignored (default is 0.3).
+
+         Returns:
+         List, the column names that are correlated above the threshold with the target.
+         """
+        target_corr = correlation_matrix[target_column].sort_values(ascending=False)
+        return target_corr[target_corr.abs() > threshold].index.tolist()

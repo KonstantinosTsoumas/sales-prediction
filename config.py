@@ -19,6 +19,7 @@ ENCODER_OBJ_FILE_PATH = '../artifacts/encoder.pkl'
 TRAIN_DATA_PATH = "../artifacts"
 TEST_DATA_PATH = "../artifacts"
 RAW_DATA_PATH = '../artifacts/DataCoSupplyChainDataset.csv'
+TRANSFORMED_DATA_PATH = '../artifacts/transformed_data.csv'
 
 # Log Paths
 LOG_FILE_PATH = f'{LOGS_DIR}/app.log'

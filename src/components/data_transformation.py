@@ -38,7 +38,7 @@ class DataTransformation:
             if df[date_col].apply(type).eq(int).any():
                 raise CustomException(f"Invalid data type for date column {date_col}", sys)
 
-            df[date_col] = pd.to_datetime(df[date_col])
+             df[date_col] = pd.to_datetime(df[date_col])
             for feature in date_features.get(date_col, []):
                 df[f"{date_col}_{feature}"] = getattr(df[date_col].dt, feature)
             df.drop(date_col, axis=1, inplace=True)
@@ -103,5 +103,10 @@ class DataTransformation:
             # Save transformed file to directory
             df.to_csv(self.data_transformation_config.transformed_data_csv_path, index=False)
             logging.info('Saving the dataset has been successfully completed.')
+
+            # Save transformed DataFrame to directory using pickle
+            save_object(self.data_transformation_config.preprocessor_obj_file_path, df)
+            return df
+
         except Exception as e:
             raise CustomException(e, sys)

@@ -1,0 +1,51 @@
+[build-system]
+requires = ["poetry-core>=1.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+name = "salesprediction"
+version = "0.0.1"
+description = ""
+authors = ["Konstantinos Tsoumas"]
+
+[tool.poetry.dev-dependencies]
+pytest = "^6.2"
+black = "^21.5b2"
+flake8 = "^3.9"
+
+[tool.poetry.dependencies]
+python = "^3.7"
+pandas = "*"
+numpy = "*"
+seaborn = "*"
+matplotlib = "*"
+scikit-learn = "*"
+dill = "*"
+
+[tool.ruff]
+ignore = ["E501"]
+select = ["E", "F", "I", "W"]
+line-length = 100
+fixable = ["I"]
+exclude = [".env", ".venv", "venv", "notebooks"]
+show-source = true
+
+[tool.coverage.paths]
+source = ["src"]
+
+[tool.coverage.run]
+branch = true
+relative_files = true
+
+[tool.coverage.report]
+show_missing = true
+fail_under = 80
+
+[tool.black]
+line-length = 100
+extend-exclude = '(
+  | .env
+  | .venv
+  | venv
+  | notebooks
+)'

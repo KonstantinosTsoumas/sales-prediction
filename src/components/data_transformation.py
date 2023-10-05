@@ -4,6 +4,8 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 from typing import List, Dict
+import skew
+import boxcox
 from src.exception import CustomException
 from sklearn.impute import SimpleImputer
 from src.logger import logging
@@ -120,6 +122,26 @@ class DataTransformation:
         return df
 
     def initiate_data_transformation(self, df: pd.DataFrame) -> pd.DataFrame:
+        """
+        This function initiates a series of data transformations including missing value imputation,
+        date feature splitting, and Box-Cox transformation for the target variable.
+        The function also saves the transformed DataFrame as a CSV file.
+
+        Args:
+        df: df, the DataFrame containing the dataset that needs transformation.
+
+        Returns:
+        pd: df, the DataFrame after the transformations have been applied.
+
+        Raises:
+        CustomException
+            An exception raised if any error occurs during the data transformation process.
+
+        Side Effects:
+        Logs various stages of the data transformation process.
+        Saves the transformed DataFrame as a CSV file.
+        Applies Box-Cox transformation on the target variable if applicable.
+        """
         try:
             logging.info("Initiating the process of reading train and test data files.")
             df = pd.read_csv(df)

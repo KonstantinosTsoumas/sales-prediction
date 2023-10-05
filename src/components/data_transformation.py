@@ -7,20 +7,28 @@ from typing import List, Dict
 from src.exception import CustomException
 from sklearn.impute import SimpleImputer
 from src.logger import logging
+from src.utils import save_object
 from config import ARTIFACTS_DIR, TRANSFORMED_DATA_PATH
 import os
 
+
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path=os.path.join(ARTIFACTS_DIR, 'preprocessor.pkl')
+    preprocessor_obj_file_path = os.path.join(ARTIFACTS_DIR, "preprocessor.pkl")
     transformed_data_csv_path = os.path.join(ARTIFACTS_DIR, "transformed_data.csv")
+
 
 class DataTransformation:
     def __init__(self):
-        self.data_transformation_config=DataTransformationConfig()
+        self.data_transformation_config = DataTransformationConfig()
         logging.info("The data transformation phase has started.")
 
-    def split_date_feature(self, df: pd.DataFrame, date_cols: List[str], date_features: Dict[str, List[str]]) -> pd.DataFrame:
+    def split_date_feature(
+        self,
+        df: pd.DataFrame,
+        date_cols: List[str],
+        date_features: Dict[str, List[str]],
+    ) -> pd.DataFrame:
         """
         This function extract features from date columns.
 
@@ -32,13 +40,17 @@ class DataTransformation:
         Returns:
         df: a df with date columns as replaced by the extracted features.
         """
-        logging.info(f" Starting to split date features. Initial DataFrame shape: {df.shape}")
+        logging.info(
+            f" Starting to split date features. Initial DataFrame shape: {df.shape}"
+        )
         for date_col in date_cols:
             # Check if any element in the date column is of integer type
             if df[date_col].apply(type).eq(int).any():
-                raise CustomException(f"Invalid data type for date column {date_col}", sys)
+                raise CustomException(
+                    f"Invalid data type for date column {date_col}", sys
+                )
 
-             df[date_col] = pd.to_datetime(df[date_col])
+            df[date_col] = pd.to_datetime(df[date_col])
             for feature in date_features.get(date_col, []):
                 df[f"{date_col}_{feature}"] = getattr(df[date_col].dt, feature)
             df.drop(date_col, axis=1, inplace=True)
@@ -58,7 +70,9 @@ class DataTransformation:
         Returns:
         df: df, a df with imputed or dropped columns
         """
-        logging.info(f"Starting dynamic imputation on column. Initial DataFrame shape: {df.shape}")
+        logging.info(
+            f"Starting dynamic imputation on column. Initial DataFrame shape: {df.shape}"
+        )
         for col in df.columns:
             missing_ratio = df[col].isna().mean()
 
@@ -69,10 +83,10 @@ class DataTransformation:
 
             if missing_ratio > 0:
                 if np.issubdtype(df[col].dtype, np.number):
-                    imputer = SimpleImputer(strategy='median')
+                    imputer = SimpleImputer(strategy="median")
                     print(f"Column {col} imputed with median.")
                 else:
-                    imputer = SimpleImputer(strategy='most_frequent')
+                    imputer = SimpleImputer(strategy="most_frequent")
                     print(f"Column {col} imputed with most frequent value.")
 
                 df[col] = imputer.fit_transform(df[[col]]).ravel()
@@ -88,21 +102,29 @@ class DataTransformation:
             logging.info("Starting missing value curation.")
 
             # Split date features
-            date_cols = ['order date (DateOrders)']
+            date_cols = ["order date (DateOrders)"]
             # Define the features we want to extract from the date column
-            date_features = {"order date (DateOrders)": ["year", "month", 'day']}
+            date_features = {"order date (DateOrders)": ["year", "month", "day"]}
             df = self.split_date_feature(df, date_cols, date_features)
 
-            logging.info("Successfully split date columns into their respective features in both train and test datasets.")
+            logging.info(
+                "Successfully split date columns into their respective features in both train and test datasets."
+            )
 
             logging.info("Initiating dynamic imputation on train and test datasets.")
             df = self.dynamic_imputer(df)
-            logging.info("Successfully applied dynamic imputation on missing values in both train and test datasets.")
-            logging.info('Starting saving the dataset as a csv file in the "artifacts" directory.')
+            logging.info(
+                "Successfully applied dynamic imputation on missing values in both train and test datasets."
+            )
+            logging.info(
+                'Starting saving the dataset as a csv file in the "artifacts" directory.'
+            )
 
             # Save transformed file to directory
-            df.to_csv(self.data_transformation_config.transformed_data_csv_path, index=False)
-            logging.info('Saving the dataset has been successfully completed.')
+            df.to_csv(
+                self.data_transformation_config.transformed_data_csv_path, index=False
+            )
+            logging.info("Saving the dataset has been successfully completed.")
 
             # Save transformed df to directory
             save_object(self.data_transformation_config.preprocessor_obj_file_path, df)

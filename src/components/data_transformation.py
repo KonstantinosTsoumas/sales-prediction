@@ -8,7 +8,7 @@ from src.exception import CustomException
 from sklearn.impute import SimpleImputer
 from src.logger import logging
 from src.utils import save_object
-from config import ARTIFACTS_DIR, TRANSFORMED_DATA_PATH
+from config import ARTIFACTS_DIR
 import os
 
 

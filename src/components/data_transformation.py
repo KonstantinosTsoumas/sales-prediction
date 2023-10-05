@@ -94,6 +94,31 @@ class DataTransformation:
         logging.info(f" Feature imputation done. New DataFrame shape: {df.shape}")
         return df
 
+    def apply_box_cox(self, df: pd.DataFrame, columns: List[str], skew_threshold: float = 0.5) -> pd.DataFrame:
+        """
+        This function applies Box-Cox transformation to specified columns in a df, if their skewness is above a given threshold.
+
+        Args:
+        df: DataFrame, the original DataFrame
+        columns: list, columns to be Box-Cox transformed
+        skew_threshold: float, skewness threshold to apply Box-Cox
+
+        Returns:
+        df: DataFrame, a DataFrame with Box-Cox transformed columns
+        """
+        for col in columns:
+            if (df[col] <= 0).any():
+                raise CustomException("Box-Cox transformation only works for positive values", sys)
+
+            # Check skewness
+            col_skewness = skew(df[col])
+            if abs(col_skewness) > skew_threshold:
+                df[col], _ = boxcox(df[col])
+                print(f"Applied Box-Cox to {col} with original skewness {col_skewness}")
+            else:
+                print(f"Skipped {col} as its skewness {col_skewness} is within the threshold")
+        return df
+
     def initiate_data_transformation(self, df: pd.DataFrame) -> pd.DataFrame:
         try:
             logging.info("Initiating the process of reading train and test data files.")
@@ -119,6 +144,14 @@ class DataTransformation:
             logging.info(
                 'Starting saving the dataset as a csv file in the "artifacts" directory.'
             )
+
+            # Apply Box-Cox Transformation on target variable)
+            target_variable = "Sales"
+            if (df["Sales"] <= 0).any():
+                logging.warning("Box-Cox transformation only works for positive values")
+            else:
+                df[target_variable], _ = boxcox(df[target_variable])
+                logging.info(f"Successfully applied Box-Cox transformation on {target_variable}.")
 
             # Save transformed file to directory
             df.to_csv(

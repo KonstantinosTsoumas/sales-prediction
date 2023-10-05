@@ -12,11 +12,13 @@ from config import ARTIFACTS_DIR, TRANSFORMED_DATA_PATH
 import os
 from src.utils import save_object
 
+
 class FeatureSelectionConfig:
     correlation_matrix_path = os.path.join(ARTIFACTS_DIR, "correlation_matrix.pkl")
     feature_importance_path = os.path.join(ARTIFACTS_DIR, "feature_importance.pkl")
     selected_features_path = os.path.join(ARTIFACTS_DIR, "selected_features.pkl")
     correlated_features_path = os.path.join(ARTIFACTS_DIR, "correlated_features.pkl")
+
 
 class FeatureSelection:
     def __init__(self):
@@ -26,7 +28,9 @@ class FeatureSelection:
         correlation_matrix = numerical_features.corr()
         return correlation_matrix
 
-    def plot_correlation_with_target(self, correlation_matrix, target_column, save_path):
+    def plot_correlation_with_target(
+        self, correlation_matrix, target_column, save_path
+    ):
         """
         This function plots and saves the correlation of all numerical features with the specified target column.
 
@@ -40,9 +44,9 @@ class FeatureSelection:
         target_corr = correlation_matrix[target_column].sort_values(ascending=False)
         plt.figure(figsize=(10, 6))
         sns.barplot(x=target_corr.values, y=target_corr.index)
-        plt.title(f'Correlation of Numerical Features with {target_column}')
-        plt.xlabel('Correlation Coefficient')
-        plt.ylabel('Features')
+        plt.title(f"Correlation of Numerical Features with {target_column}")
+        plt.xlabel("Correlation Coefficient")
+        plt.ylabel("Features")
         plt.savefig(save_path)
         plt.show()
 
@@ -69,16 +73,16 @@ class FeatureSelection:
 
     def get_correlated_features(self, correlation_matrix, target_column, threshold=0.3):
         """
-         This function filters out features based on their correlation with the target column.
+        This function filters out features based on their correlation with the target column.
 
-         Args:
-         correlation_matrix: df, the correlation matrix of the numerical features.
-         target_column: str, the column we're looking to predict.
-         threshold: float, the absolute value under which correlations are ignored (default is 0.3).
+        Args:
+        correlation_matrix: df, the correlation matrix of the numerical features.
+        target_column: str, the column we're looking to predict.
+        threshold: float, the absolute value under which correlations are ignored (default is 0.3).
 
-         Returns:
-         List, the column names that are correlated above the threshold with the target.
-         """
+        Returns:
+        List, the column names that are correlated above the threshold with the target.
+        """
         target_corr = correlation_matrix[target_column].sort_values(ascending=False)
         return target_corr[target_corr.abs() > threshold].index.tolist()
 
@@ -97,7 +101,9 @@ class FeatureSelection:
         rf_model.fit(X, y)
         return rf_model.feature_importances_
 
-    def get_important_features_from_rf(self, feature_importances, X_columns, threshold=0.03):
+    def get_important_features_from_rf(
+        self, feature_importances, X_columns, threshold=0.03
+    ):
         """
         This function filters out features based on their importance as determined by Random Forest Regressor.
 
@@ -109,11 +115,10 @@ class FeatureSelection:
         Returns:
         List, the column names that are deemed important by Random Forest.
         """
-        features_df = pd.DataFrame({
-            'Feature': X_columns,
-            'Importance': feature_importances
-        })
-        return features_df[features_df['Importance'] > threshold]['Feature'].tolist()
+        features_df = pd.DataFrame(
+            {"Feature": X_columns, "Importance": feature_importances}
+        )
+        return features_df[features_df["Importance"] > threshold]["Feature"].tolist()
 
     def execute_feature_selection(self, df):
         """
@@ -134,32 +139,50 @@ class FeatureSelection:
 
             # Save corr matrix
             plot_save_path = os.path.join(ARTIFACTS_DIR, "correlation_plot.png")
-            self.plot_correlation_with_target(correlation_matrix, 'Sales', plot_save_path)
+            self.plot_correlation_with_target(
+                correlation_matrix, "Sales", plot_save_path
+            )
 
             # Remove highly correlated features among themselves
-            correlated_features_among_themselves = self.identify_correlated_features(correlation_matrix)
+            correlated_features_among_themselves = self.identify_correlated_features(
+                correlation_matrix
+            )
             df_reduced = df.drop(columns=list(correlated_features_among_themselves))
 
             # Capturing feature importances from Random Forest
-            X = df_reduced.select_dtypes(include=[np.number]).drop(columns=['Sales'])
-            y = df_reduced['Sales']
+            X = df_reduced.select_dtypes(include=[np.number]).drop(columns=["Sales"])
+            y = df_reduced["Sales"]
             feature_importances = self.train_rf_for_feature_importance(X, y)
 
             # Identify and remove highly-correlated features
-            correlated_features = self.get_correlated_features(correlation_matrix, 'Sales')
-            important_features = self.get_important_features_from_rf(feature_importances, X.columns)
+            correlated_features = self.get_correlated_features(
+                correlation_matrix, "Sales"
+            )
+            important_features = self.get_important_features_from_rf(
+                feature_importances, X.columns
+            )
 
             # Intersect between correlated_features and important_features to get the final features
-            final_selected_features = list(set(correlated_features) & set(important_features))
+            final_selected_features = list(
+                set(correlated_features) & set(important_features)
+            )
 
             # Save results
-            save_object(self.data_analysis_config.correlation_matrix_path, correlation_matrix)
-            save_object(self.data_analysis_config.feature_importance_path, feature_importances)
-            save_object(self.data_analysis_config.correlated_features_path, correlated_features)
+            save_object(
+                self.data_analysis_config.correlation_matrix_path, correlation_matrix
+            )
+            save_object(
+                self.data_analysis_config.feature_importance_path, feature_importances
+            )
+            save_object(
+                self.data_analysis_config.correlated_features_path, correlated_features
+            )
 
             # Save the correlation plot
             plot_save_path = os.path.join(ARTIFACTS_DIR, "correlation_plot.png")
-            self.plot_correlation_with_target(correlation_matrix, 'Sales', plot_save_path)
+            self.plot_correlation_with_target(
+                correlation_matrix, "Sales", plot_save_path
+            )
 
             logging.info(f"Final selected features: {final_selected_features}")
             logging.info("The feature selection procedure has been completed.")
@@ -167,7 +190,7 @@ class FeatureSelection:
             raise CustomException(e, sys)
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     # Initiate class instance
     feature_selection = FeatureSelection()
     df = pd.read_csv(config.TRANSFORMED_DATA_PATH)

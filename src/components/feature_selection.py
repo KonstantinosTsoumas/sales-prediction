@@ -8,7 +8,7 @@ from sklearn.ensemble import RandomForestRegressor
 import config
 from src.exception import CustomException
 from src.logger import logging
-from config import ARTIFACTS_DIR, TRANSFORMED_DATA_PATH
+from config import ARTIFACTS_DIR
 import os
 from src.utils import save_object
 

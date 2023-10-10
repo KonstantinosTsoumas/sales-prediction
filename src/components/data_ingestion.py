@@ -75,6 +75,9 @@ class DataIngestion:
                 os.path.dirname(self.ingestion_config.artifacts_dir), exist_ok=True
             )
 
+            # Drop unuseful features
+            df = df.drop(['Product_Image'], axis=1)
+
             # Perform 70/30 split to train,test set and save both.
             train_set, test_set = train_test_split(df, test_size=0.3, random_state=42, stratify=df['Sales'])
             train_path = os.path.join(self.ingestion_config.artifacts_dir, 'train_data.csv')

@@ -102,7 +102,6 @@ class ModelTrainer:
             # Get the best model
             best_model_score = max([val['R2'] for val in evaluation_report.values()])
             best_model_name = [k for k, v in evaluation_report.items() if v['R2'] == best_model_score][0]
-            #best_model = models[best_model_name]
 
             if best_model_score < 0.6:
                 raise CustomException("You don't have a good model running")

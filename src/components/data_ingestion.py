@@ -7,7 +7,7 @@ from sklearn.model_selection import train_test_split, StratifiedKFold
 
 from src.exception import CustomException
 from src.logger import logging
-from config import TRAIN_DATA_PATH, ARTIFACTS_DIR
+from config import RAW_DATA_PATH, ARTIFACTS_DIR
 from src.components.data_transformation import (
     DataTransformation,
     DataTransformationConfig,
@@ -18,8 +18,6 @@ from src.components.model_trainer import ModelTrainer
 
 @dataclass
 class DataIngestionConfig:
-    train_data_path: str = TRAIN_DATA_PATH
-    test_data_path: str = TEST_DATA_PATH
     raw_data_path: str = RAW_DATA_PATH
     artifacts_dir: str = ARTIFACTS_DIR
 
@@ -76,7 +74,7 @@ class DataIngestion:
             )
 
             # Drop unuseful features
-            df = df.drop(['Product_Image'], axis=1)
+            df = df.drop(['Product Image', 'Sales per customer'], axis=1)
 
             # Perform 70/30 split to train,test set and save both.
             train_set, test_set = train_test_split(df, test_size=0.3, random_state=42, stratify=df['Sales'])

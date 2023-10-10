@@ -4,12 +4,12 @@ from dataclasses import dataclass
 import numpy as np
 import pandas as pd
 from typing import List, Dict
-import skew
-import boxcox
+from scipy.stats import skew, boxcox
+
+import config
 from src.exception import CustomException
 from sklearn.impute import SimpleImputer
 from src.logger import logging
-from src.utils import save_object
 from config import ARTIFACTS_DIR
 import os
 
@@ -17,8 +17,7 @@ import os
 @dataclass
 class DataTransformationConfig:
     preprocessor_obj_file_path = os.path.join(ARTIFACTS_DIR, "preprocessor.pkl")
-    transformed_data_csv_path = os.path.join(ARTIFACTS_DIR, "transformed_data.csv")
-
+    artifacts_dir = ARTIFACTS_DIR
 
 class DataTransformation:
     def __init__(self):
@@ -96,6 +95,21 @@ class DataTransformation:
         logging.info(f" Feature imputation done. New DataFrame shape: {df.shape}")
         return df
 
+    def apply_log_transform(self, df: pd.DataFrame, columns: List[str]) -> pd.DataFrame:
+        """
+        This functions applies log transformation to specified columns in a DataFrame.
+
+        Args:
+        df: df, the original df
+        columns: list, columns to be log-transformed
+
+        Returns:
+        df: df, a df with log-transformed columns
+        """
+        for col in columns:
+            df[col] = np.log1p(df[col])
+        return df
+
     def apply_box_cox(self, df: pd.DataFrame, columns: List[str], skew_threshold: float = 0.5) -> pd.DataFrame:
         """
         This function applies Box-Cox transformation to specified columns in a df, if their skewness is above a given threshold.
@@ -121,7 +135,7 @@ class DataTransformation:
                 print(f"Skipped {col} as its skewness {col_skewness} is within the threshold")
         return df
 
-    def initiate_data_transformation(self, df: pd.DataFrame) -> pd.DataFrame:
+    def initiate_data_transformation(self, df: pd.DataFrame, output_file_name: str) -> pd.DataFrame:
         """
         This function initiates a series of data transformations including missing value imputation,
         date feature splitting, and Box-Cox transformation for the target variable.
@@ -129,6 +143,7 @@ class DataTransformation:
 
         Args:
         df: df, the DataFrame containing the dataset that needs transformation.
+        output_file_name: str, the name of the transformed data file
 
         Returns:
         pd: df, the DataFrame after the transformations have been applied.
@@ -144,22 +159,22 @@ class DataTransformation:
         """
         try:
             logging.info("Initiating the process of reading train and test data files.")
-            df = pd.read_csv(df)
-            logging.info(f"Successfully read train data from {df}.")
+            transformed_df = df.copy()
+            logging.info(f"Successfully read train data from {transformed_df}.")
             logging.info("Starting missing value curation.")
 
             # Split date features
             date_cols = ["order date (DateOrders)"]
             # Define the features we want to extract from the date column
             date_features = {"order date (DateOrders)": ["year", "month", "day"]}
-            df = self.split_date_feature(df, date_cols, date_features)
+            transformed_df = self.split_date_feature(transformed_df, date_cols, date_features)
 
             logging.info(
                 "Successfully split date columns into their respective features in both train and test datasets."
             )
 
             logging.info("Initiating dynamic imputation on train and test datasets.")
-            df = self.dynamic_imputer(df)
+            transformed_df = self.dynamic_imputer(transformed_df)
             logging.info(
                 "Successfully applied dynamic imputation on missing values in both train and test datasets."
             )
@@ -167,23 +182,26 @@ class DataTransformation:
                 'Starting saving the dataset as a csv file in the "artifacts" directory.'
             )
 
-            # Apply Box-Cox Transformation on target variable)
+            #Apply Box-Cox Transformation on target variable)
             target_variable = "Sales"
-            if (df["Sales"] <= 0).any():
+            if (transformed_df["Sales"] <= 0).any():
                 logging.warning("Box-Cox transformation only works for positive values")
             else:
-                df[target_variable], _ = boxcox(df[target_variable])
+                transformed_df[target_variable], _ = boxcox(transformed_df[target_variable])
                 logging.info(f"Successfully applied Box-Cox transformation on {target_variable}.")
 
+            # log_transform_columns = ['Sales']
+            # transformed_df = self.apply_log_transform(transformed_df, log_transform_columns)
+
+            transformed_data_path = os.path.join(self.data_transformation_config.artifacts_dir, output_file_name)
+
             # Save transformed file to directory
-            df.to_csv(
-                self.data_transformation_config.transformed_data_csv_path, index=False
+            transformed_df.to_csv(
+                transformed_data_path, index=False
             )
             logging.info("Saving the dataset has been successfully completed.")
 
-            # Save transformed df to directory
-            save_object(self.data_transformation_config.preprocessor_obj_file_path, df)
-            return df
+            return transformed_df
 
         except Exception as e:
             raise CustomException(e, sys)

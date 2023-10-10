@@ -35,9 +35,39 @@ def save_object(file_path: str, obj: object) -> None:
         # Raise a custom exception if anything goes wrong
         raise CustomException(e, sys)
 
-def save_best_params(best_params, file_name="best_params.json"):
-    with open(file_name, "w") as f:
-        json.dump(best_params, f)
+def load_object(file_path: str) -> object:
+    """
+    This function loads a Python object from a file using pickle.
+    Args:
+        file_path: str, the path where the object is saved.
+    Returns:
+        object: the loaded Python object.
+    Raises:
+        CustomException: A custom exception for any issues that arise.
+    """
+    try:
+        with open(file_path, "rb") as file_obj:
+            loaded_obj = pickle.load(file_obj)
+        return loaded_obj
+    except Exception as e:
+        raise CustomException(e, sys)
+
+
+def save_best_params(best_params: dict, file_name: str = "best_params.json") -> None:
+    """
+    This fuctnion saves best parameters to a JSON file.
+    Args:
+        best_params: dict, the best parameters to be saved.
+        file_name: str, the name of the JSON file to save to. Defaults to "best_params.json".
+    Side Effects:
+        Writes the best parameters to a JSON file.
+    """
+    try:
+        with open(file_name, "w") as f:
+            json.dump(best_params, f)
+    except Exception as e:
+        raise CustomException(f"Failed to save best parameters: {e}", sys)
+
 
 def evaluate_models(X_train, y_train, X_test, y_test, models, param):
     """

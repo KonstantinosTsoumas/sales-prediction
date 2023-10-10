@@ -1,7 +1,7 @@
 import unittest
 import pandas as pd
 import numpy as np
-from src.components.data_transformation import DataTransformation  # replace 'your_module' with the actual module name
+from src.components.data_transformation import DataTransformation
 
 class TestDataTransformation(unittest.TestCase):
 

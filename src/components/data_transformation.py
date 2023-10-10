@@ -6,17 +6,17 @@ import pandas as pd
 from typing import List, Dict
 from scipy.stats import skew, boxcox
 
-import config
 from src.exception import CustomException
 from sklearn.impute import SimpleImputer
 from src.logger import logging
 from config import ARTIFACTS_DIR
+from src.utils import save_object
 import os
 
 
 @dataclass
 class DataTransformationConfig:
-    preprocessor_obj_file_path = os.path.join(ARTIFACTS_DIR, "preprocessor.pkl")
+    data_transformation_path = os.path.join(ARTIFACTS_DIR, "data_transformation.pkl")
     artifacts_dir = ARTIFACTS_DIR
 
 class DataTransformation:
@@ -29,7 +29,7 @@ class DataTransformation:
         df: pd.DataFrame,
         date_cols: List[str],
         date_features: Dict[str, List[str]],
-    ) -> pd.DataFrame:
+        ) -> pd.DataFrame:
         """
         This function extract features from date columns.
 
@@ -135,6 +135,13 @@ class DataTransformation:
                 print(f"Skipped {col} as its skewness {col_skewness} is within the threshold")
         return df
 
+    def save(self, file_path: str):
+        try:
+            save_object(file_path, self)
+        except Exception as e:
+            raise CustomException(e, sys)
+
+
     def initiate_data_transformation(self, df: pd.DataFrame, output_file_name: str) -> pd.DataFrame:
         """
         This function initiates a series of data transformations including missing value imputation,
@@ -190,9 +197,6 @@ class DataTransformation:
                 transformed_df[target_variable], _ = boxcox(transformed_df[target_variable])
                 logging.info(f"Successfully applied Box-Cox transformation on {target_variable}.")
 
-            # log_transform_columns = ['Sales']
-            # transformed_df = self.apply_log_transform(transformed_df, log_transform_columns)
-
             transformed_data_path = os.path.join(self.data_transformation_config.artifacts_dir, output_file_name)
 
             # Save transformed file to directory
@@ -200,6 +204,10 @@ class DataTransformation:
                 transformed_data_path, index=False
             )
             logging.info("Saving the dataset has been successfully completed.")
+
+            save_object(
+                self.data_transformation_config.data_transformation_path, self
+            )
 
             return transformed_df
 

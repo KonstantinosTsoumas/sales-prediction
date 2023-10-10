@@ -16,8 +16,6 @@ PREPROCESSOR_PKL_PATH = '../supply-chain-prediction/artifacts/preprocessor.pkl'
 ENCODER_OBJ_FILE_PATH = '../artifacts/encoder.pkl'
 
 # Data Paths
-TRAIN_DATA_PATH = "../artifacts"
-TEST_DATA_PATH = "../artifacts"
 RAW_DATA_PATH = 'input/DataCoSupplyChainDataset.csv'
 TRANSFORMED_DATA_PATH = '../supply-chain-prediction/artifacts/'
 

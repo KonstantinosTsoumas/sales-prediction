@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Sales Prediction</title>
+    <!-- Add your Bootstrap CSS here or in the head section -->
+</head>
+<body>
+    <div class="container mt-5">
+        <h1>Sales Prediction</h1>
+        <form action="{{ url_for('predict_sales')}}" method="post">
+            <h2>
+                <legend>Input Sales Data</legend>
+            </h2>
+
+            <div class="mb-3">
+                <label class="form-label">Order Item Product Price</label>
+                <input class="form-control" type="number" name="order_item_product_price" placeholder="Enter Order Item Product Price" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Sales per Customer</label>
+                <input class="form-control" type="number" name="sales_per_customer" placeholder="Enter Sales per Customer" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Product Name</label>
+                <input class="form-control" type="text" name="product_name" placeholder="Enter Product Name" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Product Price</label>
+                <input class="form-control" type="number" name="product_price" placeholder="Enter Product Price" required>
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Category Name</label>
+                <input class="form-control" type="text" name="category_name" placeholder="Enter Category Name" required>
+            </div>
+            <!-- Advanced Features -->
+            <h3>Advanced Features (Optional)</h3>
+            <div class="mb-3">
+                <label class="form-label">Order Item Total</label>
+                <input class="form-control" type="number" name="order_item_total" placeholder="Enter Order Item Total">
+            </div>
+            <!-- Here you could use file input or a text input based on how you handle images -->
+            <div class="mb-3">
+                <label class="form-label">Product Image</label>
+                <input class="form-control" type="text" name="product_image" placeholder="Enter Product Image URL">
+            </div>
+            <div class="mb-3">
+                <label class="form-label">Order Item Discount</label>
+                <input class="form-control" type="number" name="order_item_discount" placeholder="Enter Order Item Discount">
+            </div>
+
+            <div class="mb-3">
+                <input class="btn btn-success" type="submit" value="Predict Sales" />
+            </div>
+        </form>
+        <h2>
+            The prediction is: {{results}}
+        </h2>
+    </div>
+</body>
+</html>

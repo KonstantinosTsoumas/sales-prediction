@@ -2,7 +2,7 @@ from flask import Flask, request, render_template
 import pandas as pd
 import numpy as np
 
-application = Flase(__name__)
+application = Flask(__name__)
 
 app = application
 

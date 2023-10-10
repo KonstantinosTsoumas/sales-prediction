@@ -21,7 +21,7 @@ class DataEncoding:
         self.data_encoding_config = DataEncodingConfig()
         self.unique_value_threshold = unique_value_threshold
 
-    def handle_categorical_encoding(self, df: pd.DataFrame) -> pd.DataFrame:
+    def handle_categorical_encoding(self, df: pd.DataFrame, output_file_name: str) -> pd.DataFrame:
         """
         This function handles the label and one-hot encoding for the specified columns.
         It performs label encoding on columns listed in 'label_encode_cols' and
@@ -62,19 +62,18 @@ class DataEncoding:
                 df[col] = label_encoder.fit_transform(df[col])
 
             # Perform one-hot encoding on categorical columns with a small number of unique values.
-            df = pd.get_dummies(df, columns=one_hot_encode_cols, drop_first=True)
+            encoded_data = pd.get_dummies(df, columns=one_hot_encode_cols, drop_first=True)
             logging.info("Encoding completed successfully.")
 
             logging.info(
                 'Starting saving the dataset as a csv file in the "artifacts" directory.'
             )
-            output_path = os.path.join(
-                self.data_encoding_config.artifacts_dir, "encoded_data.csv"
-            )
-            df.to_csv(output_path, index=False)
-            logging.info("Saving the dataset has been successfully completed.")
 
-            return df
+            encoded_data_path = os.path.join(self.data_encoding_config.artifacts_dir, output_file_name)
+            encoded_data.to_csv(encoded_data_path, index=False)
+            logging.info("Saving the encoded dataset has been successfully completed.")
+
+            return encoded_data
 
         except Exception as e:
             raise CustomException(e, sys)

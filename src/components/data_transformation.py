@@ -19,7 +19,9 @@ class DataTransformationConfig:
     data_transformation_path = os.path.join(ARTIFACTS_DIR, "data_transformation.pkl")
     artifacts_dir = ARTIFACTS_DIR
 
+
 class DataTransformation:
+
     def __init__(self):
         self.data_transformation_config = DataTransformationConfig()
         logging.info("The data transformation phase has started.")
@@ -29,7 +31,7 @@ class DataTransformation:
         df: pd.DataFrame,
         date_cols: List[str],
         date_features: Dict[str, List[str]],
-        ) -> pd.DataFrame:
+            ) -> pd.DataFrame:
         """
         This function extract features from date columns.
 
@@ -171,11 +173,11 @@ class DataTransformation:
             logging.info("Starting missing value curation.")
 
             # Split date features
-            date_cols = ["order date (DateOrders)"]
-            # Define the features we want to extract from the date column
-            date_features = {"order date (DateOrders)": ["year", "month", "day"]}
-            transformed_df = self.split_date_feature(transformed_df, date_cols, date_features)
-
+            if 'order date (DateOrders)' in df.columns:
+                date_cols = ["order date (DateOrders)"]
+                # Define the features we want to extract from the date column
+                date_features = {"order date (DateOrders)": ["year", "month", "day"]}
+                transformed_df = self.split_date_feature(transformed_df, date_cols, date_features)
             logging.info(
                 "Successfully split date columns into their respective features in both train and test datasets."
             )
@@ -189,7 +191,7 @@ class DataTransformation:
                 'Starting saving the dataset as a csv file in the "artifacts" directory.'
             )
 
-            #Apply Box-Cox Transformation on target variable)
+            # Apply Box-Cox Transformation on target variable)
             target_variable = "Sales"
             if (transformed_df["Sales"] <= 0).any():
                 logging.warning("Box-Cox transformation only works for positive values")

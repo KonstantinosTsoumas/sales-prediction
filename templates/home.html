@@ -1,59 +1,149 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
     <title>Sales Prediction</title>
-    <!-- Add your Bootstrap CSS here or in the head section -->
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <style>
+        .login {
+            max-width: 500px;
+            margin: auto;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        h1, h2 {
+            text-align: center;
+        }
+        .placeholder {
+            color: gray;
+        }
+    </style>
 </head>
 <body>
-    <div class="container mt-5">
-        <h1>Sales Prediction</h1>
-        <form action="{{ url_for('predict_sales')}}" method="post">
-            <h2>
-                <legend>Input Sales Data</legend>
-            </h2>
-
+    <div class="login">
+        <h1>Product Sales Prediction</h1>
+        <form action="{{ url_for('predict_datapoint')}}" method="post">
+            <h1>
+                <legend>Sales Prediction for Products</legend>
+            </h1>
             <div class="mb-3">
-                <label class="form-label">Order Item Product Price</label>
-                <input class="form-control" type="number" name="order_item_product_price" placeholder="Enter Order Item Product Price" required>
+                <label class="form-label">Order Item Price</label>
+                <input class="form-control" type="number" name="Order_Item_Product_Price"
+                       placeholder="Enter Order Item Price" required min='0'/>
             </div>
             <div class="mb-3">
-                <label class="form-label">Sales per Customer</label>
-                <input class="form-control" type="number" name="sales_per_customer" placeholder="Enter Sales per Customer" required>
+                <label class="form-label">Order Total</label>
+                <input class="form-control" type="number" name="Order_Item_Total"
+                       placeholder="Enter Order Total" required min='0'/>
             </div>
             <div class="mb-3">
-                <label class="form-label">Product Name</label>
-                <input class="form-control" type="text" name="product_name" placeholder="Enter Product Name" required>
+                <label class="form-label">Order Item Quantity</label>
+                <input class="form-control" type="number" name="Order_Item_Quantity"
+                       placeholder="Enter Order Item Quantity" required min='0'/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Product Price</label>
-                <input class="form-control" type="number" name="product_price" placeholder="Enter Product Price" required>
-            </div>
-            <div class="mb-3">
-                <label class="form-label">Category Name</label>
-                <input class="form-control" type="text" name="category_name" placeholder="Enter Category Name" required>
-            </div>
-            <!-- Advanced Features -->
-            <h3>Advanced Features (Optional)</h3>
-            <div class="mb-3">
-                <label class="form-label">Order Item Total</label>
-                <input class="form-control" type="number" name="order_item_total" placeholder="Enter Order Item Total">
-            </div>
-            <!-- Here you could use file input or a text input based on how you handle images -->
-            <div class="mb-3">
-                <label class="form-label">Product Image</label>
-                <input class="form-control" type="text" name="product_image" placeholder="Enter Product Image URL">
+                <input class="form-control" type="number" name="Product_Price"
+                       placeholder="Enter Product Price" required min='0'/>
             </div>
             <div class="mb-3">
                 <label class="form-label">Order Item Discount</label>
-                <input class="form-control" type="number" name="order_item_discount" placeholder="Enter Order Item Discount">
+                <input class="form-control" type="number" name="Order_Item_Discount"
+                       placeholder="Enter Order Item Discount" required min='0'/>
             </div>
-
             <div class="mb-3">
-                <input class="btn btn-success" type="submit" value="Predict Sales" />
+                <label class="form-label">Category Name</label>
+                <select class="form-control" name="Category_Name" required>
+                    <option class="placeholder" selected disabled value="">Select Category</option>
+                    <option value="Sporting Goods">Sporting Goods</option>
+                    <option value="Cleats">Cleats</option>
+                    <option value="Shop By Sport">Shop By Sport</option>
+                    <option value="Women's Apparel">Women's Apparel</option>
+                    <option value="Electronics">Electronics</option>
+                    <option value="Boxing & MMA">Boxing & MMA</option>
+                    <option value="Cardio Equipment">Cardio Equipment</option>
+                    <option value="Trade-In">Trade-In</option>
+                    <option value="Kids' Golf Clubs">Kids' Golf Clubs</option>
+                    <option value="Hunting & Shooting">Hunting & Shooting</option>
+                    <option value="Baseball & Softball">Baseball & Softball</option>
+                    <option value="Men's Footwear">Men's Footwear</option>
+                    <option value="Camping & Hiking">Camping & Hiking</option>
+                    <option value="Consumer Electronics">Consumer Electronics</option>
+                    <option value="Cameras ">Cameras </option>
+                    <option value="Computers">Computers</option>
+                    <option value="Basketball">Basketball</option>
+                    <option value="Soccer">Soccer</option>
+                    <option value="Girls' Apparel">Girls' Apparel</option>
+                    <option value="Accessories">Accessories</option>
+                    <option value="Women's Clothing">Women's Clothing</option>
+                    <option value="Crafts">Crafts</option>
+                    <option value="Men's Clothing">Men's Clothing</option>
+                    <option value="Tennis & Racquet">Tennis & Racquet</option>
+                    <option value="Fitness Accessories">Fitness Accessories</option>
+                    <option value="As Seen on  TV!">As Seen on  TV!</option>
+                    <option value="Golf Balls">Golf Balls</option>
+                    <option value="Strength Training">Strength Training</option>
+                    <option value="Children's Clothing">Children's Clothing</option>
+                    <option value="Lacrosse">Lacrosse</option>
+                    <option value="Baby ">Baby </option>
+                    <option value="Fishing">Fishing</option>
+                    <option value="Books ">Books </option>
+                    <option value="DVDs">DVDs</option>
+                    <option value="CDs ">CDs </option>
+                    <option value="Garden">Garden</option>
+                    <option value="Hockey">Hockey</option>
+                    <option value="Pet Supplies">Pet Supplies</option>
+                    <option value="Health and Beauty">Health and Beauty</option>
+                    <option value="Music">Music</option>
+                    <option value="Video Games">Video Games</option>
+                    <option value="Golf Gloves">Golf Gloves</option>
+                    <option value="Golf Bags & Carts">Golf Bags & Carts</option>
+                    <option value="Golf Shoes">Golf Shoes</option>
+                    <option value="Golf Apparel">Golf Apparel</option>
+                    <option value="Women's Golf Clubs">Women's Golf Clubs</option>
+                    <option value="Men's Golf Clubs">Men's Golf Clubs</option>
+                    <option value="Toys">Toys</option>
+                    <option value="Water Sports">Water Sports</option>
+                    <option value="Indoor/Outdoor Games">Indoor/Outdoor Games</option>
+                </select>
             </div>
+            <div class="mb-3">
+                <label class="form-label">Product Name</label>
+                <select class="form-control" name="Product_Name" required>
+                    <option class="placeholder" selected disabled value="">Select Category</option>
+                    <option value="Smart watch">Smart watch</option>
+                    <option value="Perfect Fitness Perfect Rip Deck">Perfect Fitness Perfect Rip Deck</option>
+                    <option value="Under Armour Girls' Toddler Spine Surge Runni">Under Armour Girls' Toddler Spine Surge Runni</option>
+                    <option value="Nike Men's Dri-FIT Victory Golf Polo">Nike Men's Dri-FIT Victory Golf Polo</option>
+                    <option value="Under Armour Men's Compression EV SL Slide">Under Armour Men's Compression EV SL Slide</option>
+                    <option value="Under Armour Women's Micro G Skulpt Running S">Under Armour Women's Micro G Skulpt Running S</option>
+                    <option value="Nike Men's Free 5.0+ Running Shoe">Nike Men's Free 5.0+ Running Shoe</option>
+                    <option value="Glove It Women's Mod Oval 3-Zip Carry All Gol">Glove It Women's Mod Oval 3-Zip Carry All Gol</option>
+                    <option value="Bridgestone e6 Straight Distance NFL San Dieg">Bridgestone e6 Straight Distance NFL San Dieg</option>
+                    <option value="Columbia Men's PFG Anchor Tough T-Shirt">Columbia Men's PFG Anchor Tough T-Shirt</option>
+                    <option value="Titleist Pro V1x Golf Balls">Titleist Pro V1x Golf Balls</option>
+                    <option value="Bridgestone e6 Straight Distance NFL Tennesse">Bridgestone e6 Straight Distance NFL Tennesse</option>
+                    <option value="Polar FT4 Heart Rate Monitor">Polar FT4 Heart Rate Monitor</option>
+                    <option value="ENO Atlas Hammock Straps">ENO Atlas Hammock Straps</option>
+                    <option value="adidas Men's F10 Messi TRX FG Soccer Cleat">adidas Men's F10 Messi TRX FG Soccer Cleat</option>
+                    <option value="Brooks Women's Ghost 6 Running Shoe">Brooks Women's Ghost 6 Running Shoe</option>
+                    <option value="Nike Men's CJ Elite 2 TD Football Cleat">Nike Men's CJ Elite 2 TD Football Cleat</option>
+                    <option value="Diamondback Women's Serene Classic Comfort Bi">Diamondback Women's Serene Classic Comfort Bi</option>
+                    <option value="Industrial consumer electronics">Industrial consumer electronics</option>
+                    <option value="Web Camera">Web Camera</option>
+                    <option value="Dell Laptop">Dell Laptop</option>
+                    <option value="SOLE E25 Elliptical">SOLE E25 Elliptical</option>
+                    <option value="Elevation Training Mask 2.0">Elevation Training Mask 2.0</option>
+                    <option value="adidas Men's Germany Black Crest Away Tee">adidas Men's Germany Black Crest Away Tee</option>
+                    <option value="Team Golf Pittsburgh Steelers Putter Grip">Team Golf Pittsburgh Steelers Putter Grip</option>
+                    <option value="Glove It Urban Brick Golf Towel">Glove It Urban Brick Golf Towel</option>
+                </select>
+            </div>
+            <button type="submit">Predict</button>
         </form>
         <h2>
-            The prediction is: {{results}}
+            The prediction is {{results}}
         </h2>
     </div>
 </body>

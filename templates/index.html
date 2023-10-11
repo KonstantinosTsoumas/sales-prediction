@@ -1,1 +1,335 @@
-<h1>Welcome to the Sales prediction home page</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Sales Prediction</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f5f5f5;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: auto;
+            padding: 2em;
+            background-color: #ffffff;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+        }
+
+        h1 {
+            color: #333366;
+            font-size: 2.5em;
+            text-align: center;
+            margin-bottom: 1em;
+        }
+
+        p {
+            color: #666;
+            line-height: 1.6;
+            margin-bottom: 1em;
+        }
+
+        .banner {
+            background: linear-gradient(90deg, rgba(63,94,251,1) 0%, rgba(252,70,107,1) 100%);
+            color: white;
+            padding: 1em 0;
+            text-align: center;
+        }
+
+        .banner h1 {
+            margin: 0;
+            padding: 0;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 1em;
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #333366;
+            color: white;
+        }
+
+        .button-container {
+            display: flex;
+            justify-content: center; /* Center horizontally */
+            align-items: center; /* Center vertically */
+            height: 20vh; /* This will center the button vertically within the viewport */
+        }
+
+        .styled-button {
+            padding: 15px 30px; /* Increase padding for a larger button */
+            font-size: 18px; /* Increase font size for a larger button */
+            background-color: #007bff;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 5px;
+            font-weight: bold;
+            transition: background-color 0.3s ease;
+        }
+
+        .styled-button:hover {
+            background-color: #0056b3;
+        }
+        /* ...existing CSS... */
+        .creator-info {
+            font-size: 1rem;
+            text-align: right;
+            margin-right: 20px;
+        }
+    </style>
+</head>
+<body>
+    <div class="banner">
+        <div class="creator-info">
+            Created by <a href="https://github.com/KonstantinosTsoumas">Konstantinos Tsoumas</a> © 2023
+        </div>
+        <h1>Welcome to a Sales Prediction project!</h1>
+    </div>
+
+    <div class="container">
+        <h1>What's this all about?</h1>
+        <p>Our Sales Prediction project aims to provide accurate and timely predictions to help you make data-driven decisions.
+            The dataset contains data from the Supply Chain domain and it was formed from Fabian Constante, Fernando Silva, António Pereira.
+            You can find more about the dataset <a href="https://data.mendeley.com/datasets/8gx2fvg2k6/5">here</a>.</p>
+
+        <h1>Features</h1>
+        <p>We offer a variety of features including data analytics, trend forecasting, and much more.
+        <h1>Feature Names:</h1>
+<table>
+    <thead>
+    <tr>
+        <th>Field</th>
+        <th>Description</th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td>Type</td>
+        <td>Type of transaction made</td>
+    </tr>
+    <tr>
+        <td>Days for shipping (real)</td>
+        <td>Actual shipping days of the purchased product</td>
+    </tr>
+    <tr>
+        <td>Days for shipment (scheduled)</td>
+        <td>Days of scheduled delivery of the purchased product</td>
+    </tr>
+    <tr>
+        <td>Benefit per order</td>
+        <td>Earnings per order placed</td>
+    </tr>
+    <tr>
+        <td>Sales per customer</td>
+        <td>Total sales per customer made per customer</td>
+    </tr>
+    <tr>
+        <td>Delivery Status</td>
+        <td>Delivery status of orders: Advance shipping, Late delivery, Shipping canceled, Shipping on time</td>
+    </tr>
+    <tr>
+        <td>Late_delivery_risk</td>
+        <td>Categorical variable that indicates if sending is late (1), it is not late (0)</td>
+    </tr>
+    <tr>
+        <td>Category Id</td>
+        <td>Product category code</td>
+    </tr>
+    <tr>
+        <td>Category Name</td>
+        <td>Description of the product category</td>
+    </tr>
+    <tr>
+        <td>Customer City</td>
+        <td>City where the customer made the purchase</td>
+    </tr>
+    <tr>
+        <td>Customer Country</td>
+        <td>Country where the customer made the purchase</td>
+    </tr>
+    <tr>
+        <td>Customer Email</td>
+        <td>Customer's email</td>
+    </tr>
+    <tr>
+        <td>Customer Fname</td>
+        <td>Customer name</td>
+    </tr>
+    <tr>
+        <td>Customer Id</td>
+        <td>Customer ID</td>
+    </tr>
+    <tr>
+        <td>Customer Lname</td>
+        <td>Customer lastname</td>
+    </tr>
+    <tr>
+        <td>Customer Password</td>
+        <td>Masked customer key</td>
+    </tr>
+    <tr>
+        <td>Customer Segment</td>
+        <td>Types of Customers: Consumer, Corporate, Home Office</td>
+    </tr>
+    <tr>
+        <td>Customer State</td>
+        <td>State to which the store where the purchase is registered belongs</td>
+    </tr>
+    <tr>
+        <td>Customer Street</td>
+        <td>Street to which the store where the purchase is registered belongs</td>
+    </tr>
+    <tr>
+        <td>Customer Zipcode</td>
+        <td>Customer Zipcode</td>
+    </tr>
+    <tr>
+        <td>Department Id</td>
+        <td>Department code of store</td>
+    </tr>
+    <tr>
+        <td>Department Name</td>
+        <td>Department name of store</td>
+    </tr>
+    <tr>
+        <td>Latitude</td>
+        <td>Latitude corresponding to location of store</td>
+    </tr>
+    <tr>
+        <td>Longitude</td>
+        <td>Longitude corresponding to location of store</td>
+    </tr>
+    <tr>
+        <td>Market</td>
+        <td>Market to where the order is delivered: Africa, Europe, LATAM, Pacific Asia, USCA</td>
+    </tr>
+    <tr>
+        <td>Order City</td>
+        <td>Destination city of the order</td>
+    </tr>
+    <tr>
+        <td>Order Country</td>
+        <td>Destination country of the order</td>
+    </tr>
+    <tr>
+        <td>Order Customer Id</td>
+        <td>Customer order code</td>
+    </tr>
+    <tr>
+        <td>order date (DateOrders)</td>
+        <td>Date on which the order is made</td>
+    </tr>
+    <tr>
+        <td>Order Id</td>
+        <td>Order code</td>
+    </tr>
+    <tr>
+        <td>Order Item Cardprod Id</td>
+        <td>Product code generated through the RFID reader</td>
+    </tr>
+    <tr>
+        <td>Order Item Discount</td>
+        <td>Order item discount value</td>
+    </tr>
+    <tr>
+        <td>Order Item Discount Rate</td>
+        <td>Order item discount percentage</td>
+    </tr>
+    <tr>
+        <td>Order Item Id</td>
+        <td>Order item code</td>
+    </tr>
+    <tr>
+        <td>Order Item Product Price</td>
+        <td>Price of products without discount</td>
+    </tr>
+    <tr>
+        <td>Order Item Profit Ratio</td>
+        <td>Order Item Profit Ratio</td>
+    </tr>
+    <tr>
+        <td>Order Item Quantity</td>
+        <td>Number of products per order</td>
+    </tr>
+    <tr>
+        <td>Sales</td>
+        <td>Value in sales</td>
+    </tr>
+    <tr>
+        <td>Order Item Total</td>
+        <td>Total amount per order</td>
+    </tr>
+    <tr>
+        <td>Order Profit Per Order</td>
+        <td>Order Profit Per Order</td>
+    </tr>
+    <tr>
+        <td>Order Region</td>
+        <td>Region of the world where the order is delivered</td>
+    </tr>
+    <tr>
+        <td>Order State</td>
+        <td>State of the region where the order is delivered</td>
+    </tr>
+    <tr>
+        <td>Order Status</td>
+        <td>Order Status: COMPLETE, PENDING, CLOSED, PENDING_PAYMENT, CANCELED, PROCESSING, SUSPECTED_FRAUD, ON_HOLD, PAYMENT_REVIEW</td>
+    </tr>
+    <tr>
+        <td>Product Card Id</td>
+        <td>Product code</td>
+    </tr>
+    <tr>
+        <td>Product Category Id</td>
+        <td>Product category code</td>
+    </tr>
+    <tr>
+        <td>Product Description</td>
+        <td>Product Description</td>
+    </tr>
+    <tr>
+        <td>Product Image</td>
+        <td>Link of visit and purchase of the product</td>
+    </tr>
+    <tr>
+        <td>Product Name</td>
+        <td>Product Name</td>
+    </tr>
+    <tr>
+        <td>Product Price</td>
+        <td>Product Price</td>
+    </tr>
+    <tr>
+        <td>Product Status</td>
+        <td>Status of the product stock: If it is 1, not available; if it is 0, the product is available</td>
+    </tr>
+    <tr>
+        <td>Shipping date (DateOrders)</td>
+        <td>Exact date and time of shipment</td>
+    </tr>
+    <tr>
+        <td>Shipping Mode</td>
+        <td>The following shipping modes are presented: Standard Class, First Class, Second Class, Same Day</td>
+    </tr>
+    </tbody>
+</table>
+
+</p>
+    <div class="button-container">
+        <a href="/predictdata" class="styled-button">Go to Predict Data</a>
+    </div>
+    </div>
+</body>
+</html>

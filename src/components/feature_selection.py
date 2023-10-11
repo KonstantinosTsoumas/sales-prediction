@@ -49,6 +49,7 @@ class FeatureSelection:
         plt.xlabel("Correlation Coefficient")
         plt.ylabel("Features")
         plt.savefig(save_path + 'correlation_plot_sales.png')
+
     def identify_correlated_features(self, corr_matrix, threshold=0.8):
         """
         This function identifies features that are highly correlated based on the provided threshold.
@@ -149,7 +150,7 @@ class FeatureSelection:
             correlated_features_among_themselves.discard("Sales")
             df_reduced = df.drop(columns=list(correlated_features_among_themselves))
 
-            # Capturing feature importances from Random Forest
+            # Capturing feature importance from Random Forest
             X = df_reduced.select_dtypes(include=[np.number, 'number']).drop(columns=["Sales"], axis =1)
             y = df_reduced["Sales"]
             feature_importances = self.train_rf_for_feature_importance(X, y)
@@ -167,8 +168,11 @@ class FeatureSelection:
                 set(correlated_features) | set(important_features)
             )
 
-            # Filtering df_reduced to only have final_selected_features and the target 'Sales'
-            final_df = df[final_selected_features + ['Sales']]
+            # Filtering df_reduced to only have final_selected_features
+            final_df = df[final_selected_features]
+            # Check if "Sales" column exists in final_df
+            if "Sales" not in final_df.columns:
+                final_df["Sales"] = df["Sales"]
 
             # Save this DataFrame to a CSV or any format you prefer
             final_df.to_csv(os.path.join(self.feature_selection_config.artifacts_dir, output_file_name),

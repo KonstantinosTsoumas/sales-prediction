@@ -28,5 +28,12 @@ def predict_datapoint():
         Product_Name= request.form.get('Product_Name')
         )
 
+        df_pred = input_data.get_data_as_data_frame()
+        print(f"DataFrame Content:\n{df_pred}")
+
+        prediction_pipeline = PredictPipeline()
+        print("Initializing Prediction Pipeline")
+        results = prediction_pipeline.predict(input_data)
+        print("Prediction Complete!")
 
 

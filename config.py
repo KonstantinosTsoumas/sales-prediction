@@ -1,5 +1,3 @@
-import os
-
 # Directories
 ARTIFACTS_DIR = "../supply-chain-prediction/artifacts/"
 SRC_DIR = '../src'
@@ -12,7 +10,6 @@ TESTS_DIR = '../tests'
 # Artifacts Paths
 ENCODED_DATA_CSV_PATH = '../artifacts/encoded_data.csv'
 MODEL_PKL_PATH = '../artifacts/model.pkl'
-PREPROCESSOR_PKL_PATH = '../supply-chain-prediction/artifacts/preprocessor.pkl'
 ENCODER_OBJ_FILE_PATH = '../artifacts/encoder.pkl'
 
 # Data Paths

@@ -2,7 +2,7 @@ import os
 import sys
 
 import numpy as np
-import pandas as pd
+import dill
 import json
 import pickle
 from sklearn.model_selection import GridSearchCV
@@ -47,15 +47,14 @@ def load_object(file_path: str) -> object:
     """
     try:
         with open(file_path, "rb") as file_obj:
-            loaded_obj = pickle.load(file_obj)
-        return loaded_obj
+            return dill.load(file_obj)
     except Exception as e:
         raise CustomException(e, sys)
 
 
 def save_best_params(best_params: dict, file_name: str = "best_params.json") -> None:
     """
-    This fuctnion saves best parameters to a JSON file.
+    This fuctionn saves the best parameters to a JSON file.
     Args:
         best_params: dict, the best parameters to be saved.
         file_name: str, the name of the JSON file to save to. Defaults to "best_params.json".

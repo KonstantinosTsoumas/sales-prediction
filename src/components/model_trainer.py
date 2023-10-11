@@ -17,9 +17,11 @@ from src.logger import logging
 from src.utils import save_object, evaluate_models, save_best_params
 from config import ARTIFACTS_DIR
 
+
 @dataclass
 class ModelTrainerConfig:
     trained_model_file_path = os.path.join(ARTIFACTS_DIR, "model.pkl")
+
 
 class ModelTrainer:
     def __init__(self):
@@ -47,9 +49,9 @@ class ModelTrainer:
             feature_columns = [col for col in train_df.columns if col != target_column]
 
             X_train = train_df[feature_columns]
-            y_train = train_df[target_column].iloc[:, 0]
+            y_train = train_df[target_column]
             X_test = test_df[feature_columns]
-            y_test = test_df[target_column].iloc[:, 0]
+            y_test = test_df[target_column]
 
             models = {
                 "Random Forest": RandomForestRegressor(),
@@ -94,8 +96,8 @@ class ModelTrainer:
             }
 
             # Evaluate the models
-            evaluation_report, best_model, best_params = evaluate_models(X_train=X_train, y_train=y_train, X_test=X_test, y_test=y_test,
-                                                 models=models, param=params)
+            evaluation_report, best_model, best_params = evaluate_models(X_train=X_train, y_train=y_train,
+                                                                         X_test=X_test, y_test=y_test, models=models, param=params)
             save_best_params(best_params)
             logging.info(f"Model evaluation report: {evaluation_report}")
 
@@ -105,7 +107,7 @@ class ModelTrainer:
 
             if best_model_score < 0.6:
                 raise CustomException("You don't have a good model running")
-            logging.info(f"The search for the best model is completed.")
+            logging.info("The search for the best model is completed.")
 
             save_object(
                 file_path = self.model_trainer_config.trained_model_file_path,
@@ -119,4 +121,3 @@ class ModelTrainer:
 
         except Exception as e:
             raise CustomException(e, sys)
-

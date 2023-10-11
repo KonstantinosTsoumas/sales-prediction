@@ -10,18 +10,20 @@ from src.logger import logging
 from config import RAW_DATA_PATH, ARTIFACTS_DIR
 from src.components.data_transformation import (
     DataTransformation,
-    DataTransformationConfig,
-)
-from src.components.data_encoding import DataEncoding, DataEncodingConfig
-from src.components.feature_selection import FeatureSelection, FeatureSelectionConfig
+    )
+from src.components.data_encoding import DataEncoding
+from src.components.feature_selection import FeatureSelection
 from src.components.model_trainer import ModelTrainer
+
 
 @dataclass
 class DataIngestionConfig:
     raw_data_path: str = RAW_DATA_PATH
     artifacts_dir: str = ARTIFACTS_DIR
 
+
 class DataIngestion:
+
     def __init__(self):
         self.ingestion_config = DataIngestionConfig()
 
@@ -37,9 +39,9 @@ class DataIngestion:
         """
         logging.info("Starting Stratified K-Fold splitting.")
         try:
-            df = pd.read_csv(INPUT_DATA_CSV)
-            X = df.drop('target', axis=1)  # Replace 'target' with your target column
-            y = df['target']  # Replace 'target' with your target column
+            df = pd.read_csv(self.ingestion_config.raw_data_path)
+            X = df.drop('Sales', axis=1)
+            y = df['Sales']
 
             skf = StratifiedKFold(n_splits=n_splits, random_state=42, shuffle=True)
 

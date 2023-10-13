@@ -77,7 +77,7 @@ pip install -e .
 ```
 
 
-## [Usage]
+## Usage
 There are two options. 
 You can either run the whole code from scratch locally or you can build the Flask app and use the pre-trained model.
 

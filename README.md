@@ -136,9 +136,3 @@ This project is licensed under the MIT License. Feel free to use and modify the 
 
 Contributions to this project are welcome. Feel free to open issues and submit pull requests to suggest improvements, add new features, or fix any bugs.
 
-
-```bash
-# Check Python installation
-python --version
-
-

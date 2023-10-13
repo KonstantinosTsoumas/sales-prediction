@@ -1,5 +1,5 @@
 # Directories
-ARTIFACTS_DIR = "../supply-chain-prediction/artifacts/"
+ARTIFACTS_DIR = "/artifacts/"
 SRC_DIR = '../src'
 COMPONENTS_DIR = '../src/components'
 PIPELINE_DIR = '../src/pipeline'
@@ -14,7 +14,7 @@ ENCODER_OBJ_FILE_PATH = '../artifacts/encoder.pkl'
 
 # Data Paths
 RAW_DATA_PATH = 'input/DataCoSupplyChainDataset.csv'
-TRANSFORMED_DATA_PATH = '../supply-chain-prediction/artifacts/'
+TRANSFORMED_DATA_PATH = '/artifacts/'
 
 # Log Paths
 LOG_FILE_PATH = f'{LOGS_DIR}/app.log'

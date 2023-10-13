@@ -38,9 +38,9 @@ git clone <repository-url>
 cd sales-prediction
 ```
 
-### 3. Install the required libraries 
+### 3. Install the required libraries using setup
 ```
-pip install -r requirements.txt
+pip install -e .
 ```
 
 ## Directory Structure

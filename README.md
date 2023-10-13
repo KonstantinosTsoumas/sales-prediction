@@ -1,5 +1,10 @@
-# Sales Prediction.
+# Sales Prediction
 
+## UI Interface:
+
+![Screenshot 2023-10-13 at 12.30.50.png](..%2F..%2F..%2Fvar%2Ffolders%2Ffw%2Fpg3_8bwx6dn789940vy1ps8m0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_rfMcJr%2FScreenshot%202023-10-13%20at%2012.30.50.png)
+
+![Screenshot 2023-10-13 at 12.31.09.png](..%2F..%2F..%2Fvar%2Ffolders%2Ffw%2Fpg3_8bwx6dn789940vy1ps8m0000gn%2FT%2FTemporaryItems%2FNSIRD_screencaptureui_wdq6Gs%2FScreenshot%202023-10-13%20at%2012.31.09.png)
 ## Table of Contents
 
 - [Introduction](#introduction)

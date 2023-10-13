@@ -2,9 +2,9 @@
 
 ## UI Interface:
 
-![Home page interface](https://github.com/KonstantinosTsoumas/sales-prediction/blob/main/images/input_page.png)
-
 ![UI input page](https://github.com/KonstantinosTsoumas/sales-prediction/blob/main/images/home.png)
+
+![Home page interface](https://github.com/KonstantinosTsoumas/sales-prediction/blob/main/images/input_page.png)
 
 
 ## Table of Contents

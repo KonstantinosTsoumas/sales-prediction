@@ -101,17 +101,17 @@ pip install -r requirements.txt
 You can also use Poetry for dependency management.
 
 Main Dependencies:
--pandas
--numpy
--seaborn
--matplotlib
--scikit-learn
--dill
+* pandas
+* numpy
+* seaborn
+* matplotlib
+* scikit-learn
+* dill
 
 Development Dependencies:
--pytest
--black
--flake8
+* pytest
+* black
+flake8
 
 Run the following command to install project dependencies:
 ```

@@ -1,6 +1,6 @@
 # Sales Prediction
 
-## UI Interface:
+## UI:
 
 ![UI input page](https://github.com/KonstantinosTsoumas/sales-prediction/blob/main/images/home.png)
 

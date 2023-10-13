@@ -45,34 +45,37 @@ pip install -r requirements.txt
 
 ## Directory Structure
 
-├── artifacts
-├── catboost_info
-├── input
-├── notebooks
-│   └── exploration.ipynb
-├── pipelines
-├── src
-│   ├── components
-│   └── pipeline
-│       ├── __init__.py
-│       ├── exception.py
-│       ├── logger.py
-│       └── utils.py
-├── templates
-├── tests
-│   ├── test_data_encoding.py
-│   ├── test_data_imputation.py
-│   ├── test_data_transformation.py
-│   ├── test_extract_features.py
-│   └── test_feature_selection.py
-├── .gitignore
-├── README.md
-├── app.py
-├── best_params.json
-├── config.py
-├── pyproject.toml
-├── requirements.txt
-└── setup.py
+```
+├── artifacts                # Storing build artifacts or temporary files
+├── catboost_info            # Information and logs related to CatBoost model
+├── input                    # Folder for input data files
+├── notebooks                # Jupyter notebooks
+│   └── exploration.ipynb    # Notebook for data exploration
+├── pipelines                # Data pipelines for ETL tasks
+├── src                      # Source code directory
+│   ├── components           # Reusable code components/modules
+│   └── pipeline             # Core pipeline code
+│       ├── __init__.py      # Initialize pipeline package
+│       ├── exception.py     # Custom exceptions for the pipeline
+│       ├── logger.py        # Logging utility
+│       └── utils.py         # Miscellaneous utility functions
+├── templates                # Template files (if needed)
+├── tests                    # Test scripts and files
+│   ├── test_data_encoding.py        # Tests for data encoding
+│   ├── test_data_imputation.py      # Tests for data imputation
+│   ├── test_data_transformation.py  # Tests for data transformations
+│   ├── test_extract_features.py     # Tests for feature extraction
+│   └── test_feature_selection.py    # Tests for feature selection
+├── .gitignore               # Git ignore file
+├── README.md                # Project readme
+├── app.py                   # Main application file
+├── best_params.json         # JSON file to store best parameters for models
+├── config.py                # Configuration file
+├── pyproject.toml           # Project metadata and dependencies
+├── requirements.txt         # Required packages
+└── setup.py                 # Project setup script
+```
+
 
 ## [Usage]
 There are two options. 

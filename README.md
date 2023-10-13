@@ -1,23 +1,141 @@
-# This is going to be a Prediction Project
+# Sales Prediction.
+
+## Table of Contents
+
+- [Introduction](#introduction)
+- [Getting Started](#getting-started)
+  - [Prerequisites](#prerequisites)
+  - [Installation](#installation)
+- [Directory Structure](#directory-structure)
+- [Usage](#usage)
+- [Dependencies](#dependencies)
+- [Authors](#authors)
+- [Modify and Extend](#modify-and-extend)
+- [License](#license)
+- [Contributing](#contributing)
+
+## Getting Started
+
+## Introduction
+
+This project is primarily aimed at predicting the value in sales of a product as trained on a Supply Chain Dataset.
+You can find more about the dataset <a href="https://data.mendeley.com/datasets/8gx2fvg2k6/5">here</a>.
 
 
-Project Structure:
+### Prerequisites
+
+- Python 3.7 or higher
+- Poetry package manager (optional)
+
+### Installation
+### 1. Clone the repository (please check copy the repository url from GitHub):
+```
+git clone <repository-url>
+```
+
+### 2. Navigate to project (if not already)
+```
+cd sales-prediction
+```
+
+### 3. Install the required libraries 
+```
+pip install -r requirements.txt
+```
+
+## Directory Structure
+
+├── artifacts
+├── catboost_info
+├── input
+├── notebooks
+│   └── exploration.ipynb
+├── pipelines
+├── src
+│   ├── components
+│   └── pipeline
+│       ├── __init__.py
+│       ├── exception.py
+│       ├── logger.py
+│       └── utils.py
+├── templates
+├── tests
+│   ├── test_data_encoding.py
+│   ├── test_data_imputation.py
+│   ├── test_data_transformation.py
+│   ├── test_extract_features.py
+│   └── test_feature_selection.py
+├── .gitignore
+├── README.md
+├── app.py
+├── best_params.json
+├── config.py
+├── pyproject.toml
+├── requirements.txt
+└── setup.py
+
+## [Usage]
+There are two options. 
+You can either run the whole code from scratch locally or you can build the Flask app and use the pre-trained model.
+
+Run from scratch option:
+### 1. Clone the repository (please check copy the repository url from GitHub):
+```
+git clone <repository-url>
+```
+
+### 2. Navigate to project (if not already)
+```
+cd sales-prediction
+```
+
+### 3. Install the requirements
+```
+pip install -r requirements.txt
+```
+
+## Dependencies
+You can also use Poetry for dependency management.
+
+Main Dependencies:
+-pandas
+-numpy
+-seaborn
+-matplotlib
+-scikit-learn
+-dill
+
+Development Dependencies:
+-pytest
+-black
+-flake8
+
+Run the following command to install project dependencies:
+```
+poetry install
+```
+
+## Authors
+
+[Konstantinos Tsoumas](https://github.com/KonstantinosTsoumas)
+
+## Modify and extend
+
+Feel free to modify the code and adapt it to your specific needs.
+Add additional tests in the tests directory to ensure the correctness of the code.
+Update the documentation and README.md file to reflect any changes made.
+
+## License
+
+This project is licensed under the MIT License. Feel free to use and modify the code according to the terms of the license.
+
+## Contributing
+
+Contributions to this project are welcome. Feel free to open issues and submit pull requests to suggest improvements, add new features, or fix any bugs.
 
 
-This project is organized mostly within a "Source" directory (src) where all the project code and components are placed.
+```bash
+# Check Python installation
+python --version
 
-### Components directory
-The components directory as the name suggests, hosts all the main components of the project and its of the file names indicates their purpose.
-
-### Pipelines directory
-This is where different data processing pipelines are defined.
-1. train_pipeline.py: This script likely defines the data processing pipeline for model training. It may orchestrate the sequence of data ingestion, transformation, training, and evaluation.
-
-2. predict_pipeline.py: This script appears to define a data processing pipeline for making predictions using a trained model.
-
-a. logger.py: This module is responsible for handling project logging. It sets up a logging configuration, allowing various messages to be logged, including errors and information about the project's execution.
-
-b. exception.py: This module defines a custom exception class and error handling functions. It's intended to capture and handle exceptions that may occur during the project's execution.
-
-c. utils.py: This utility module contains common functions that are meant to be used throughout the project. It could include functions for interacting with databases, cloud storage, or other common tasks.
 
